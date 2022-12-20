@@ -1,0 +1,90 @@
+#define uint32 unsigned int
+volatile uint32 *RCC_CR 				= 0x40023800;				//RCC Clock control Register	
+volatile uint32 *RCC_AHB1ENR 		= 0x40023800+0x30;	//Peripheral clock Register offset is 0x30
+
+volatile uint32 *GPIOG_MODER 		=	0x40021800;				//Its DataBit Config Reg,
+volatile uint32 *GPIOG_OTYPER 	= 0x40021800+0x04;
+volatile uint32 *GPIOG_OSPEEDR 	= 0x40021800+0x08;
+volatile uint32 *GPIOG_PUPDR 		= 0x40021800+0x0c;
+volatile uint32 *GPIOG_ODR 			= 0x40021800+0x14;
+
+void clock_internal_enable();
+void gpio_init();
+void blink_led();
+void gpio_init1();
+void blink_led1();
+int main()
+{
+	
+	clock_internal_enable();
+	gpio_init1();
+	gpio_init();
+	while(1)
+	{
+		
+		blink_led();
+		blink_led1();
+		
+	}
+	
+}
+
+void clock_internal_enable()
+{
+
+	*RCC_CR |= (1<<0);								//HSI Oscillator On by setting 1 st bit as '1'
+	*RCC_AHB1ENR |= (1<<6);						// IO port G clock enable by setting 6 th bit as '1'
+}
+void gpio_init()
+{
+
+	*GPIOG_MODER |= (1<<26);					//Setting pin13 as Output by setting 26th bit as '1'
+	*GPIOG_MODER &= ~(1<<27);					//Setting pin13 as Output by setting 27th bit as '0'
+	*GPIOG_OTYPER &= ~(1<<13);				//pin13 is become link Push Pull by setting 13th bit as '1'
+	*GPIOG_OSPEEDR &= ~(1<<27);				//Setting Medium speed
+	*GPIOG_OSPEEDR |= (1<<26);				//Setting Medium speed
+	*GPIOG_PUPDR &= ~(1<<27);					//Pin13 is become No Pull and Push
+	*GPIOG_PUPDR &= ~(1<<26);					//Pin13 is become No Pull and Push
+	
+}
+void blink_led()
+{
+		for(uint32 i =0 ; i<100000; i++)
+			{
+			*GPIOG_ODR |= (1<<13);
+			}
+			
+			for(uint32 i =0 ; i<100000; i++)
+			{
+			*GPIOG_ODR &= ~(1<<13);
+			}	
+	
+}
+
+void blink_led1()
+{
+		for(uint32 i =0 ; i<100000; i++)
+			{
+			*GPIOG_ODR |= (1<<14);
+			}
+			
+			for(uint32 i =0 ; i<100000; i++)
+			{
+			*GPIOG_ODR &= ~(1<<14);
+			}	
+	
+}
+
+void gpio_init1()
+{
+
+	*GPIOG_MODER |= (1<<28);					//Setting pin13 as Output by setting 26th bit as '1'
+	*GPIOG_MODER &= ~(1<<29);					//Setting pin13 as Output by setting 27th bit as '0'
+	*GPIOG_OTYPER &= ~(1<<14);				//pin13 is become link Push Pull by setting 13th bit as '1'
+	*GPIOG_OSPEEDR &= ~(1<<29);				//Setting Medium speed
+	*GPIOG_OSPEEDR |= (1<<28);				//Setting Medium speed
+	*GPIOG_PUPDR &= ~(1<<29);					//Pin13 is become No Pull and Push
+	*GPIOG_PUPDR &= ~(1<<28);					//Pin13 is become No Pull and Push
+	
+}
+
