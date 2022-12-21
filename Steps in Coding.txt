@@ -1,0 +1,61 @@
+
+Initializing the Clock:
+
+1.Fist we have to On the oscillator so we are setting the RCC Clock Regiser 0th bit as 1.
+
+2.RCC AHB1 peripheral clock register (RCC_AHB1ENR) we have to enable that one.
+We are initializing the Peripheral clock Registor IO Port.
+GPIOGEN: IO port G clock enable
+This bit is set and cleared by software.
+0: IO port G clock disabled
+1: IO port G clock enabled
+
+Setting its address for the index where it is. Finding the address from memory mapping.
+
+-------------------------------------------------------------------------------------------
+
+GPIO Port Initializing
+
+1.GPIO port mode register (GPIOx_MODER) (x = A..I/J/K)
+
+Mode 13 is our LED so setting the Mode 13 (General Purpose output) 
+To select Mode 13 we have to set the 26,27 bit as 1,0
+
+2.GPIO port output type register (GPIOx_OTYPER) (x = A..I/J/K)
+We are setting the address from its Offset 0x40021800+0x04;
+
+OTy: Port x configuration bits (y = 0..15)
+These bits are written by software to configure the output type of the I/O port.
+0: Output push-pull (reset state)
+1: Output open-drain
+
+Setting 13th bit as 1 for the LED 13.
+
+
+3.GPIO port output speed register (GPIOx_OSPEEDR)
+(x = A..I/J/K)
+
+OSPEEDRy[1:0]: Port x configuration bits (y = 0..15)
+These bits are written by software to configure the I/O output speed.
+00: Low speed
+01: Medium speed
+10: High speed
+11: Very high speed
+Note: Refer to the product datasheets for the values of OSPEEDRy bits versus VDD
+range and external load.
+
+*GPIOG_OSPEEDR &= ~(1<<27);				
+*GPIOG_OSPEEDR |= (1<<26);
+
+
+4.GPIO port pull-up/pull-down register (GPIOx_PUPDR)
+(x = A..I/J/K)
+Address offset: 0x0C
+
+
+PUPDRy[1:0]: Port x configuration bits (y = 0..15)
+These bits are written by software to configure the I/O pull-up or pull-down
+00: No pull-up, pull-down
+01: Pull-up
+10: Pull-down
+11: Reserved	
