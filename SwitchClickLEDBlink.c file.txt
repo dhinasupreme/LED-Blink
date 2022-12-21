@@ -1,0 +1,57 @@
+#include "switch.h"
+
+void clock_internal_enable(void);
+void gpiog_init(void);
+void blink_led(void);
+void gpioA_init(void);
+
+int main(void){
+    clock_internal_enable();
+    gpiog_init();
+    gpioA_init();
+    
+    while(1)
+    {
+				temp=(*GPIOA_IDR&1);
+        if(temp ==1)
+            {
+        *GPIOG_ODR|=(1<<13);//pin13 High(PG13)
+            }
+        else
+            {
+				*GPIOG_ODR &=~(1<<13);//PIN13 high(PG13)
+            }
+
+
+    }
+}
+
+void clock_internal_enable(void){
+    *RCC_CR |=(1<<0);
+    *RCC_AHB1ENR =0X00000041;
+    //*RCC_AHB1ENR |=(1<<0);
+}
+
+void gpiog_init(void){
+    *GPIOG_MODER |=(1<<26); //enbling PG13 pin as output
+    *GPIOG_MODER &=~(1<<27);//enbling PG13 pin as output
+    *GPIOG_OTYPER &=~(1<<13);//0: Output push-pull (reset state)
+    *GPIOG_OSPEEDR &=~(1<<27);//selecting 01: Medium speed
+    *GPIOG_OSPEEDR |= (1<<26);//selecting 01: Medium speed0
+    *GPIOG_PUPDR &=~(1<<27);//00: No pull-up, pull-down
+    *GPIOG_PUPDR &=~(1<<26);//00: No pull-up, pull-down
+}
+
+/* GPIOB */
+
+void gpioA_init(void){
+
+*GPIOA_MODER &=~(1<<0);
+*GPIOA_MODER &=~(1<<1);
+*GPIOA_OTYPER &=~(1<<0);
+*GPIOG_OSPEEDR &=~(1<<1);
+*GPIOG_OSPEEDR |= (1<<0);
+*GPIOA_PUPDR   &=~(1<<0);
+*GPIOA_PUPDR  &=~(1<<1);
+}
+

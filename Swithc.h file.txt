@@ -1,0 +1,23 @@
+#define uint32 unsigned int
+//GPIOG
+volatile uint32 *RCC_CR =  0x40023800; //RCC_CR address allocation
+volatile uint32 *RCC_AHB1ENR = 0X40023800+0X30;//RCC AHB1 peripheral clock register with base+offset addr
+
+
+volatile uint32 *GPIOG_MODER = 0X40021800; //GPIOG port address(MODER) output, input, analog,alternate
+volatile uint32 *GPIOG_OTYPER = 0X40021800+0X04;//output type register
+volatile uint32 *GPIOG_OSPEEDR = 0X40021800+0X08;//GPIO port output speed register
+volatile uint32 *GPIOG_PUPDR = 0X40021800+0X0C;//GPIO port pull-up/pull-down register
+volatile uint32 *GPIOG_ODR = 0X40021800+0X14;//GPIO port output data register
+
+/* GPIOB */
+//volatile uint32 *RCC_CR = 0x40023800; //RCC_CR address allocation
+//volatile uint32 *RCC_AHB1ENR = 0X40023800+0X30;//RCC AHB1 peripheral clock register with base+offset addr
+
+
+volatile uint32 *GPIOA_MODER = 0x40020000;
+volatile uint32 *GPIOA_OTYPER = 0x40020000+0X04;
+volatile uint32 *GPIOA_OSPEEDR = 0x40020000+0X08;
+volatile uint32 *GPIOA_PUPDR = 0x40020000+0X0C;
+volatile uint32 *GPIOA_IDR = 0x40020000+0X10;
+uint32 temp;
